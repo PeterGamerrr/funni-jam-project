@@ -1,5 +1,7 @@
 # funni-jam-project
 
-Een grappige game.
+Game Funni.
 
-Gemaakt voor de voor de funni game jam.
+Made by PeterGamerrr, Colax and Lokulicious
+
+
