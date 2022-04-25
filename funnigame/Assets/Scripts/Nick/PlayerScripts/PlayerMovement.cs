@@ -8,32 +8,35 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody2D rb;
 
     [Header("Movement")]
-    [SerializeField] float movementSpeed; 
-    [SerializeField] float acceleration;
-    [SerializeField] float decceleration;
-    [SerializeField] float velPower;
-    [SerializeField] float frictionAmount;
+    [SerializeField] private float movementSpeed; 
+    [SerializeField] private float acceleration;
+    [SerializeField] private float decceleration;
+    [SerializeField] private float velPower;
+    [SerializeField] private float frictionAmount;
     [Space]
 
 
     [Header("Jumping")]
-    [SerializeField] float jumpForce;
-    [SerializeField] float jumpCoyoteTime;
-    [SerializeField] float jumpBufferTime;
-    [SerializeField] float jumpCutMultiplier;
-    [SerializeField] float fallGravityMultiplier;
-    [SerializeField] Transform groundCheckPoint;
-    [SerializeField] Vector2 groundCheckSize;
-    [SerializeField] private int groundLayerID;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpCoyoteTime;
+    [SerializeField] private float jumpBufferTime;
+    [SerializeField] private float jumpCutMultiplier;
+    [SerializeField] private float fallGravityMultiplier;
+    [SerializeField] private Transform groundCheckPoint;
+    [SerializeField] private Vector2 groundCheckSize;
+    [SerializeField] private LayerMask groundLayer;
+    //[SerializeField] private int groundLayerID;
+    [Space(3)]
 
+    [SerializeField] private Transform companionTarget;
 
     private float gravityScale;
 
 
     //state variables
-    bool isJumping;
-    bool jumpInputReleased;
-
+    private bool isJumping;
+    private bool jumpInputReleased;
+    public bool isFacingLeft;
 
     //timers
     private float lastGroundTime;
@@ -62,6 +65,9 @@ public class PlayerMovement : MonoBehaviour
         //check for/handle inputs
         InputHandler();
         GroundCheck();
+        
+        AnimationHandler();
+
     }
 
 
@@ -117,7 +123,7 @@ public class PlayerMovement : MonoBehaviour
     private void GroundCheck()
     {
         //return true if grounded
-        if (Physics2D.OverlapBox(groundCheckPoint.position, groundCheckSize, 0, groundLayerID))
+        if (Physics2D.OverlapBox(groundCheckPoint.position, groundCheckSize, 0, groundLayer))
         {
             lastGroundTime = jumpCoyoteTime;
             isJumping = false;
@@ -157,6 +163,19 @@ public class PlayerMovement : MonoBehaviour
             }
             jumpInputReleased = true;
             lastJumpTime = 0;
+        }
+    }
+
+
+    private void AnimationHandler()
+    {
+        if (horizontalInput > 0.01f)
+        {
+            isFacingLeft = false;
+        }
+        else if (horizontalInput < -0.01f)
+        {
+            isFacingLeft = true;
         }
     }
 
